@@ -1,0 +1,26 @@
+<div class="container">
+	<h3>{{ 'title' | translate }}</h3>
+
+	<div class="lang" *ngIf="(language$ | async) as language">
+		<span [ngClass]="{ 'active': language === 'ru' }" (click)="switchLang('ru')"> {{ 'ru' }}</span>
+		<span [ngClass]="{ 'active': language === 'en' }" (click)="switchLang('en')">{{ 'en' }}</span>
+	</div>
+
+	<input (keydown.enter)="addMsg()" [(ngModel)]="message" placeholder="{{ 'placeholder' | translate }}" />
+
+	<ng-container *ngIf="(messages$ | async) as messages; else loading">
+		<ul>
+			<li [ngClass]="{ 'right': message.me }" *ngFor="let message of messages; let i = index">
+				{{ message.message }}<br>
+				<span>
+					{{ 'sent' | translate }}: {{ message.userName }} {{ 'at' | translate }}
+					{{ message.createdAt | date: 'dd.MM.yyyy HH:mm:ss' }}
+				</span>
+			</li>
+		</ul>
+	</ng-container>
+
+	<ng-template #loading>
+		{{ 'loading' | translate }}
+	</ng-template>
+</div>
